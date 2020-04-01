@@ -1,44 +1,44 @@
-const { buildSchema } = require('graphql')
+const { buildSchema } = require('graphql');
 
-module.exports = buildSchema(`
-    type User {
-        name: String!
-        email: String!
-        age: Int!
-    }
+module.exports = buildSchema(/* GraphQL */ `
+  type User {
+    name: String!
+    email: String!
+    age: Int!
+  }
 
-    type TestType {
-        count: Int!
-        users: [User!]!
-    }
+  type TestType {
+    count: Int!
+    users: [User!]!
+  }
 
-    input UserInput {
-        name: String!
-        email: String!
-    }
+  input UserInput {
+    name: String!
+    email: String!
+  }
 
-    type Todo {
-        id: ID!
-        title: String!
-        done: Boolean!
-        createdAt: String
-        updatedAt: String
-    }
+  type Todo {
+    id: ID!
+    title: String!
+    done: Boolean!
+    createdAt: String
+    updatedAt: String
+  }
 
-    type Query {
-        test: TestType!
-        random(min: Int!, max: Int!, count: Int!): [Float!]!
-        getTodos: [Todo!]!
-    }
+  type Query {
+    test: TestType!
+    random(min: Int!, max: Int!, count: Int!): [Float!]!
+    getTodos: [Todo!]!
+  }
 
-    input TodoInput {
-        title: String!
-    }
+  input TodoInput {
+    title: String!
+  }
 
-    type Mutation {
-        addTestUser(user: UserInput!): User!
-        createTodo(todo: TodoInput!): Todo!
-        completeTodo(id: ID!): Todo!
-        deleteTodo(id: ID!): ID!
-    }
-`)
+  type Mutation {
+    addTestUser(user: UserInput!): User!
+    createTodo(todo: TodoInput!): Todo!
+    completeTodo(id: ID!): Todo!
+    deleteTodo(id: ID!): ID!
+  }
+`);

@@ -1,108 +1,112 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-  <style>
-    .done {
-      text-decoration: line-through;
-    }
-    [v-cloak] {
-      display: none;
-    }
-  </style>
-  <title>Задачи</title>
-</head>
-<body>
-<div id="app" v-cloak>
-  <v-app :dark="isDark">
-    <div>
-      <v-toolbar color="blue darken-4" dark>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
-        <v-toolbar-title class="headline">Список дел</v-toolbar-title>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons"
+      rel="stylesheet"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
+    />
+    <style>
+      .done {
+        text-decoration: line-through;
+      }
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+    <title>Задачи</title>
+  </head>
+  <body>
+    <div id="app" v-cloak>
+      <v-app :dark="isDark">
+        <div>
+          <v-toolbar color="blue darken-4" dark>
+            <v-app-bar-nav-icon></v-app-bar-nav-icon>
+            <v-toolbar-title class="headline">Список дел</v-toolbar-title>
 
-        <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-btn icon @click="toggleTheme" v-on="on">
-              <v-icon v-model="isDark">{{ show ? 'check_circle' : 'check_circle_outline' }}
-              </v-icon>
-            </v-btn>
-          </template>
-          <span>{{isDark ? 'Светлая тема' : 'Темная тема'}}</span>
-        </v-tooltip>
-      </v-toolbar>
-    </div>
-    <v-container>
-      <v-row justify="center">
-        <v-col cols="12">
-          <v-theme-provider root>
-            <v-list two-line subheader>
-              <v-container>
-                <v-subheader class="headline">
-                  {{new Date() | date}}
-                </v-subheader>
-                <v-spacer></v-spacer>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn icon @click="toggleTheme" v-on="on">
+                  <v-icon v-model="isDark">{{ show ? 'check_circle' : 'check_circle_outline' }} </v-icon>
+                </v-btn>
+              </template>
+              <span>{{isDark ? 'Светлая тема' : 'Темная тема'}}</span>
+            </v-tooltip>
+          </v-toolbar>
+        </div>
+        <v-container>
+          <v-row justify="center">
+            <v-col cols="12">
+              <v-theme-provider root>
+                <v-list two-line subheader>
+                  <v-container>
+                    <v-subheader class="headline">
+                      {{new Date() | date}}
+                    </v-subheader>
+                    <v-spacer></v-spacer>
 
-                <p class="text-right"><b>{{todos.length}}</b> Задач</p>
+                    <p class="text-right"><b>{{todos.length}}</b> Задач</p>
 
-                <v-col cols="12">
-                  <v-text-field
-                    clearable
-                    v-model="todoTitle"
-                    id="newTodo"
-                    name="newTodo"
-                    label="Введите название задачи"
-                    @keyup.enter="addTodo"
-                    :dark="isDark"
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-container>
-              <v-subheader class="subheading" v-if="todos.length === 0">
-                У вас 0 задач, добавьте новую
-              </v-subheader>
-              <v-subheader class="subheading" v-else>
-                Ваши задачи
-              </v-subheader>
-              <v-list-item-group multiple>
-                <v-list-item v-for="(todo, i) in todos" :key="i">
-                  <template>
-                    <v-list-item-action>
-                      <v-checkbox
-                        v-if="!todo.done"
-                        v-model="todo.done"
-                        @change="completeTodo(todo.id)"
+                    <v-col cols="12">
+                      <v-text-field
+                        clearable
+                        v-model="todoTitle"
+                        id="newTodo"
+                        name="newTodo"
+                        label="Введите название задачи"
+                        @keyup.enter="addTodo"
                         :dark="isDark"
-                      ></v-checkbox>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                      <v-list-item-title :class="{done: todo.done}">
-                        {{todo.title | capitalize}}
-                      </v-list-item-title>
-                      <v-list-item-subtitle>
-                        Добавлено в: {{todo.createdAt | date(!0)}}
-                        (изменено {{todo.updatedAt | date(!0)}})
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-btn fab small color="error" @click="removeTodo(todo.id)"><v-icon>close</v-icon></v-btn>
-                  </template>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-theme-provider root>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-app>
-</div>
+                      >
+                      </v-text-field>
+                    </v-col>
+                  </v-container>
+                  <v-subheader class="subheading" v-if="todos.length === 0">
+                    У вас 0 задач, добавьте новую
+                  </v-subheader>
+                  <v-subheader class="subheading" v-else>
+                    Ваши задачи
+                  </v-subheader>
+                  <v-list-item-group multiple>
+                    <v-list-item v-for="(todo, i) in todos" :key="i">
+                      <template>
+                        <v-list-item-action>
+                          <v-checkbox
+                            v-if="!todo.done"
+                            v-model="todo.done"
+                            @change="completeTodo(todo.id)"
+                            :dark="isDark"
+                          ></v-checkbox>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                          <v-list-item-title :class="{done: todo.done}">
+                            {{todo.title | capitalize}}
+                          </v-list-item-title>
+                          <v-list-item-subtitle>
+                            Добавлено в: {{todo.createdAt | date(!0)}} (изменено {{todo.updatedAt | date(!0)}})
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                        <v-btn fab small color="error" @click="removeTodo(todo.id)"><v-icon>close</v-icon></v-btn>
+                      </template>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-theme-provider>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-app>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
-<script src="/app.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="/app.js"></script>
+  </body>
 </html>
