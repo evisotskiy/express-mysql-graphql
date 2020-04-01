@@ -31,9 +31,9 @@
     }
   },
   "lint-staged": {
-    "**/*.js": [
+    "*.js": [
       "eslint --cache --fix --max-warnings=0"
     ],
-    "**/*.{js,json,md}": "prettier --write"
+    "*": "prettier --write"
   }
 }
